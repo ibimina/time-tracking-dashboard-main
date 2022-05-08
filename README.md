@@ -32,7 +32,7 @@ Users should be able to:
 ![desktop](inde.html(iPhone6_7_8)c.png)
 
 ### Links
-- Solution URL: (https://github.com/ibimina/time-trackinng-dashboard-main)
+- Solution URL: (https://github.com/ibimina/time-tracking-dashboard-main)
 - Live Site URL:(https://ibimina.github.io/time-tracking-dashboard-main/)
 
 
