@@ -1,510 +1,119 @@
-
-
-let day = document.querySelector(".daily");
-let week = document.querySelector(".weekly");
-let month = document.querySelector(".monthly");
-let main = document.querySelector("main");
-let mains = document.querySelector("aside");
-
+let day = document.querySelector("#daily");
+let week = document.querySelector("#weekly");
+let month = document.querySelector("#monthly");
 async function data() {
   try {
     const request = await fetch("data.json");
     const response = await request.json();
 
-    daily(response);
-    weekly(response);
-    monthly(response);
+    return response;
   } catch (error) {
     console.log("error");
   }
 }
-data();
 
-//daily inner html
-
-const structure = (element) => {
-  let sample = ` <section class="work same">
-        <div class="imgwork samee">
-          <img src="images/icon-work.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt=""class="som" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.daily.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.daily.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const structureOne = (element) => {
-  let sample = ` <section class="worka same">
-        <div class="imgplay samee">
-          <img src="images/icon-play.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.daily.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.daily.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const structureTwo = (element) => {
-  let sample = ` <section class="workb same">
-        <div class="imgstudy samee">
-          <img src="images/icon-study.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.daily.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.daily.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureThree = (element) => {
-  let sample = ` <section class="workc same">
-        <div class="imgexe samee">
-          <img src="images/icon-exercise.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.daily.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.daily.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureFour = (element) => {
-  let sample = ` <section class="workd same">
-        <div class="imgsocial samee">
-          <img src="images/icon-social.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.daily.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.daily.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureFive = (element) => {
-  let sample = ` <section class="worke same">
-        <div class="imgself samee">
-          <img src="images/icon-self-care.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.daily.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.daily.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const daily = (response) => {
-  day.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if (e.target) {
-      console.log("b");
-      response.map((element) => {
-        if (element.title === "Work") {
-          console.log(element);
-          console.log(structure(element));
-          mains.innerHTML = structure(element);
-        }
-        if (element.title === "Play") {
-          console.log(element);
-          console.log(structureOne(element));
-          mains.innerHTML += structureOne(element);
-        }
-        if (element.title === "Study") {
-          mains.innerHTML += structureTwo(element);
-        }
-        if (element.title === "Exercise") {
-          mains.innerHTML += structureThree(element);
-        }
-        if (element.title === "Social") {
-          mains.innerHTML += structureFour(element);
-        }
-        if (element.title === "Self Care") {
-          mains.innerHTML += structureFive(element);
-        }
-      });
-    }
+data().then((res) => {
+  res.forEach(({ title, timeframes }) => {
+    let past = "Yesterday";
+    let wk = "Last week";
+    let mnth = "Last month";
+    day.innerHTML += html(
+      title,
+      timeframes.daily.current,
+      timeframes.daily.previous,
+      past
+    );
+    past = "Last week";
+    weekly.innerHTML += html(
+      title,
+      timeframes.weekly.current,
+      timeframes.weekly.previous,
+      wk
+    );
+    monthly.innerHTML += html(
+      title,
+      timeframes.monthly.current,
+      timeframes.monthly.previous,
+      mnth
+    );
   });
-};
+});
+const html = (title, current, previous, past) => {
+  let template = ` <section class="activity">
 
-//weekly html
-const structureWeekly = (element) => {
-  let sample = ` <section class="work same">
-        <div class="imgwork samee">
-          <img src="images/icon-work.svg" alt="" />
+        <div class="imgwork ${title}">
         </div>
-
         <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
+          <div class="con flex">
+            <h3 class="title">${title}</h3>
+            <img src="images/icon-ellipsis.svg" alt=""class="ell" />
           </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
+          <div class="rate flex">
+         <p class="curr">${current}hrs</p>
 
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
+            <p class="prev">${past}-${previous}hrs</p>
+
           </div>
         </div>
-      </sec`;
-  return sample;
+      </sec>`;
+  return template;
 };
 
-const structureWeeklyOne = (element) => {
-  let sample = ` <section class="worka same">
-        <div class="imgplay samee">
-          <img src="images/icon-play.svg" alt="" />
-        </div>
+const showTimeframe = document.querySelectorAll(".tm-con");
+const hiddenTimeFrame = () => {
+  showTimeframe.forEach((timeframe) => timeframe.classList.add("display"));
+};
+hiddenTimeFrame();
+showTimeframe[0].classList.remove("display");
+const ul = document.querySelector("ul");
 
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
+const links = document.querySelectorAll(".nav");
 
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
-
-          <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
+const active = () => {
+  links.forEach((timeframe) => timeframe.classList.remove("active"));
 };
 
-const structureWeeklyTwo = (element) => {
-  let sample = ` <section class="workb same">
-        <div class="imgstudy samee">
-          <img src="images/icon-study.svg" alt="" />
-        </div>
+links[0].classList.add("active");
 
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
+ul.addEventListener("click", (e) => {
+  showDay(e);
+});
 
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
+function showDay(e) {
+  let link = e.target;
 
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureWeeklyThree = (element) => {
-  let sample = ` <section class="workc same">
-        <div class="imgexe samee">
-          <img src="images/icon-exercise.svg" alt="" />
-        </div>
+  if (link.classList.contains("daily")) {
+    active();
+    link.classList.add("active");
 
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureWeeklyFour = (element) => {
-  let sample = ` <section class="workd same">
-        <div class="imgsocial samee">
-          <img src="images/icon-social.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureWeeklyFive = (element) => {
-  let sample = ` <section class="worke same">
-        <div class="imgself samee">
-          <img src="images/icon-self-care.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const weekly = (response) => {
-  week.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if (e.target) {
-      console.log("b");
-
-      response.map((element) => {
-        if (element.title === "Work") {
-          //     console.log(element)
-          //   console.log(structure(element))
-          mains.innerHTML = structureWeekly(element);
-        }
-        if (element.title === "Play") {
-          //     console.log(element)
-          //   console.log(structureOne(element))
-          mains.innerHTML += structureWeeklyOne(element);
-        }
-        if (element.title === "Study") {
-          mains.innerHTML += structureWeeklyTwo(element);
-        }
-        if (element.title === "Exercise") {
-          mains.innerHTML += structureWeeklyThree(element);
-        }
-        if (element.title === "Social") {
-          mains.innerHTML += structureWeeklyFour(element);
-        }
-        if (element.title === "Self Care") {
-          mains.innerHTML += structureWeeklyFive(element);
-        }
-      });
-    }
-  });
-};
-//month html
-const structureMonth = (element) => {
-  let sample = ` <section class="work same">
-        <div class="imgwork samee">
-          <img src="images/icon-work.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.monthly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.monthly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const structureMonthOne = (element) => {
-  let sample = ` <section class="worka same">
-        <div class="imgplay samee">
-          <img src="images/icon-play.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const structureMonthTwo = (element) => {
-  let sample = ` <section class="workb same">
-        <div class="imgstudy samee">
-          <img src="images/icon-study.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.weekly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.weekly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureMonthThree = (element) => {
-  let sample = ` <section class="workc same">
-        <div class="imgexe samee">
-          <img src="images/icon-exercise.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.monthly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.monthly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureMonthFour = (element) => {
-  let sample = ` <section class="workd same">
-        <div class="imgsocial samee">
-          <img src="images/icon-social.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.monthly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.monthly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-const structureMonthFive = (element) => {
-  let sample = ` <section class="worke same">
-        <div class="imgself samee">
-          <img src="images/icon-self-care.svg" alt="" />
-        </div>
-
-        <div class="detailss">
-          <div class="title">
-            <h3>${element.title}</h3>
-
-            <div class="dot"><img src="images/icon-ellipsis.svg" alt="" /></div>
-          </div>
-          <div class="rate">
-            <p class="curr">${element.timeframes.monthly.current}hrs</p>
-
-            <p class="prev">last week-${element.timeframes.monthly.previous}hrs</p>
-          </div>
-        </div>
-      </sec`;
-  return sample;
-};
-
-const monthly = (response) => {
-  month.addEventListener("click", (e) => {
-    e.preventDefault();
-
-    if (e.target) {
-      console.log("b");
-      response.map((element) => {
-        if (element.title === "Work") {
-          mains.innerHTML = structureMonth(element);
-        }
-        if (element.title === "Play") {
-          mains.innerHTML += structureMonthOne(element);
-        }
-        if (element.title === "Study") {
-          mains.innerHTML += structureMonthTwo(element);
-        }
-        if (element.title === "Exercise") {
-          mains.innerHTML += structureMonthThree(element);
-        }
-        if (element.title === "Social") {
-          mains.innerHTML += structureMonthFour(element);
-        }
-        if (element.title === "Self Care") {
-          mains.innerHTML += structureMonthFive(element);
-        }
-      });
-    }
-  });
-};
+    showTimeframe.forEach((timeframe) => {
+      if (timeframe.children[0].id === "daily") {
+        timeframe.classList.remove("display");
+      } else if (timeframe.children[0].id !== "daily") {
+        timeframe.classList.add("display");
+      }
+    });
+  } else if (link.classList.contains("weekly")) {
+    active();
+    link.classList.add("active");
+    showTimeframe.forEach((timeframe) => {
+      if (timeframe.children[0].id === "weekly") {
+        showTimeframe[0].classList.add("display");
+        timeframe.classList.remove("display");
+      } else if (timeframe.children[0].id !== "weekly") {
+        timeframe.classList.add("display");
+      }
+    });
+  } else if (link.classList.contains("monthly")) {
+    active();
+    link.classList.add("active");
+    showTimeframe.forEach((timeframe) => {
+      if (timeframe.children[0].id === "monthly") {
+        showTimeframe[0].classList.add("display");
+        timeframe.classList.remove("display");
+      } else if (timeframe.children[0].id !== "monthly") {
+        timeframe.classList.add("display");
+      }
+    });
+  }
+}
