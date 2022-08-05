@@ -65,11 +65,11 @@ const html = (title, current, previous, past) => {
       </sec>`;
   return template;
 };
-//to display one timeframe at a time
+//  To display one timeframe at a time
 //select all timeframe container 
 //set them to display none
 //remove the display none from the first container to show visiblity
-//create  a function that shows one timeframe when daily or weekly or monthly link is clicked
+//create  a function that shows selected dashboard when daily or weekly or monthly link is clicked
 
 const showTimeframe = document.querySelectorAll(".tm-con");
 
@@ -86,50 +86,45 @@ const ul = document.querySelector("ul");
 const links = document.querySelectorAll(".nav");
 
 const active = () => {
-  links.forEach((timeframe) => timeframe.classList.remove("active"));
+  links.forEach((link) => link.classList.remove("active"));
 };
 
 links[0].classList.add("active");
 
-ul.addEventListener("click", (e) => {
-  showDay(e);
-});
 
-function showDay(e) {
-  let link = e.target;
+function display(link, time) {
+
+  active();
+  link.classList.add("active");
+
+  showTimeframe.forEach((timeframe) => {
+    if (timeframe.children[0].id === time) {
+      showTimeframe[0].classList.add("display");
+      timeframe.classList.remove("display");
+    } else if (timeframe.children[0].id !== time) {
+      timeframe.classList.add("display");
+    }
+  });
+}
+
+function showTime(e) {
+  const link = e.target;
 
   if (link.classList.contains("daily")) {
-    active();
-    link.classList.add("active");
-
-    showTimeframe.forEach((timeframe) => {
-      if (timeframe.children[0].id === "daily") {
-        timeframe.classList.remove("display");
-      } else if (timeframe.children[0].id !== "daily") {
-        timeframe.classList.add("display");
-      }
-    });
+    const time = "daily";
+    display(link,time)
+ 
   } else if (link.classList.contains("weekly")) {
-    active();
-    link.classList.add("active");
-    showTimeframe.forEach((timeframe) => {
-      if (timeframe.children[0].id === "weekly") {
-        showTimeframe[0].classList.add("display");
-        timeframe.classList.remove("display");
-      } else if (timeframe.children[0].id !== "weekly") {
-        timeframe.classList.add("display");
-      }
-    });
+  const time = "weekly";
+      display(link, time);
+   
   } else if (link.classList.contains("monthly")) {
-    active();
-    link.classList.add("active");
-    showTimeframe.forEach((timeframe) => {
-      if (timeframe.children[0].id === "monthly") {
-        showTimeframe[0].classList.add("display");
-        timeframe.classList.remove("display");
-      } else if (timeframe.children[0].id !== "monthly") {
-        timeframe.classList.add("display");
-      }
-    });
+    const time ="monthly"
+      display(link, time);
+  
   }
 }
+
+ul.addEventListener("click", (e) => {
+  showTime(e);
+});

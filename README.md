@@ -47,26 +47,49 @@ Users should be able to:
 - Mobile-first workflow
 
 
-### What I learned
+### Proud of this
 
-Applying this css property enabled the functionaly of its hover effect
+Function to hide or display daily or weekly or monthly dashboard
+```js
 
+function display(link, time) {
+  
+  active();
+  link.classList.add("active");
 
-```css
-div.detailss {
-  grid-column: 1/3;
-  grid-row: 2;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  border-radius: 10px;
-  position: relative;
-  background-color: hsl(235, 46%, 20%);
-  top: -0.5rem;
-  z-index: 999999999;
-  padding: 2rem;
+  showTimeframe.forEach((timeframe) => {
+    if (timeframe.children[0].id === time) {
+      showTimeframe[0].classList.add("display");
+      timeframe.classList.remove("display");
+    } else if (timeframe.children[0].id !== time) {
+      timeframe.classList.add("display");
+    }
+  });
 }
 ```
+html format for each activity 
+```js
+const html = (title, current, previous, past) => {
+  let template = ` <section class="activity">
 
+        <div class="imgwork ${title}">
+        </div>
+        <div class="detailss">
+          <div class="con flex">
+            <h3 class="title">${title}</h3>
+            <img src="images/icon-ellipsis.svg" alt=""class="ell" />
+          </div>
+          <div class="rate flex">
+         <p class="curr">${current}hrs</p>
+
+            <p class="prev">${past}-${previous}hrs</p>
+
+          </div>
+        </div>
+      </sec>`;
+  return template;
+};
+```
 ## Author
 Ibimina Hart
  Frontend Mentor - (https://www.frontendmentor.io/profile/ibimina)
